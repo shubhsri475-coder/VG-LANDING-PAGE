@@ -1,0 +1,55 @@
+// Form submit handler
+  // IMPORTANT: Replace the Google Form URL below with your actual Google Form prefilled URL
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('fname').value;
+    const email = document.getElementById('femail').value;
+    const phone = document.getElementById('fphone').value;
+    const city = document.getElementById('fcity').value;
+    const target = document.getElementById('ftarget').value;
+
+    // ============================================================
+    // REPLACE THIS URL WITH YOUR GOOGLE FORM PREFILLED SUBMIT URL
+    // How to get it: In your Google Form → ⋮ → Get pre-filled link
+    // Then swap the field entry IDs below
+    // ============================================================
+    const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/d/e/YOUR_FORM_ID/formResponse";
+    const ENTRY_NAME   = "entry.000000001"; // Replace with your field ID
+    const ENTRY_EMAIL  = "entry.000000002";
+    const ENTRY_PHONE  = "entry.000000003";
+    const ENTRY_CITY   = "entry.000000004";
+    const ENTRY_TARGET = "entry.000000005";
+
+    const formData = new FormData();
+    formData.append(ENTRY_NAME,   name);
+    formData.append(ENTRY_EMAIL,  email);
+    formData.append(ENTRY_PHONE,  phone);
+    formData.append(ENTRY_CITY,   city);
+    formData.append(ENTRY_TARGET, target);
+
+    // Send to Google Form silently (no-cors)
+    fetch(GOOGLE_FORM_ACTION, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: formData
+    }).catch(() => {}); // no-cors means no readable response — this is expected
+
+    // Show success
+    document.getElementById('regForm').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+
+    // Update seat counter
+    const seatsEl = document.getElementById('seats-left');
+    const current = parseInt(seatsEl.textContent);
+    if (current > 0) seatsEl.textContent = current - 1;
+
+    // Redirect to Razorpay / Instamojo payment page after 1.5s
+    // REPLACE THIS URL with your actual ₹51 payment link
+    setTimeout(() => {
+      window.location.href = "https://rzp.io/l/YOUR_PAYMENT_LINK"; // ← Replace this
+    }, 1500);
+  }
+</script>
+</body>
+</html>
